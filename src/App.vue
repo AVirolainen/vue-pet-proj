@@ -1,26 +1,27 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="mainWrapper h-screen">
+    <app-header />
+    <app-device />
+  </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import AppHeader from "./components/AppHeader/AppHeader.vue";
+import AppDevice from "./components/AppDevice/AppDevice.vue";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    AppHeader,
+    AppDevice,
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.mainWrapper {
+  background-image: url("./assets/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 </style>
