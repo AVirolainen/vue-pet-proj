@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex items-center pt-5 mb-10">
-    <img src="./assets/logo.png" class="w-80 mx-auto" />
+    <img src="./assets/logo.png" class="w-64 mx-auto" />
   </div>
 </template>
 
