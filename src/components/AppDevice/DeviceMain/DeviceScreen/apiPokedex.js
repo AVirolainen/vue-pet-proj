@@ -16,7 +16,8 @@ export const formatedPokemonData = async () => {
     return {
       name: promisedValue.name,
       order: promisedValue.order,
-      sprite: promisedValue.sprites.front_default,
+      pixelSprite: promisedValue.sprites.front_default,
+      sprite: promisedValue.sprites.other["official-artwork"].front_default,
     };
   });
   return formattedData;

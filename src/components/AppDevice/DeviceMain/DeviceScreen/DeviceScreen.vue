@@ -6,19 +6,27 @@
       <div class="lamp" />
       <div class="lamp" />
     </div>
-    <div class="mainScreen bg-white h-5/6 w-5/6 m-auto p-2">
-      <div
-        v-for="pokemon in pokedex"
-        :key="pokemon.order"
-        class="pokemonListItem w-full h-1/6 flex"
-      >
-        <img class="pokeball" src="./assets/pokeball.png" />
-        <div class="w-5/6 text-2xl flex items-center pl-5">
-          <img :src="pokemon.sprite" />
-          {{ capitalizeName(pokemon.name) }}
+    <div class="mainScreen bg-white h-5/6 w-5/6 m-auto p-2 flex">
+      <div class="w-1/2">
+        <div
+          v-for="pokemon in pokedex"
+          :key="pokemon.order"
+          @click="selectPokemon(pokemon)"
+          class="pokemonListItem h-1/6 flex justify-around"
+        >
+          <img class="pokeball" src="./assets/pokeball.png" />
+          <div class="w-1/2 text-2xl flex items-center pl-5">
+            №{{ pokemon.order }}
+            {{ capitalizeName(pokemon.name) }}
+          </div>
+          <img class="pokeball" src="./assets/pokeball.png" />
         </div>
-        <img class="pokeball" src="./assets/pokeball.png" />
       </div>
+      <transition name="fade">
+        <div class="w-1/2" v-if="selectedPokemon">
+          <img :src="selectedPokemon.sprite" />
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -30,6 +38,7 @@ export default {
   data: function () {
     return {
       pokedex: [],
+      selectedPokemon: null,
     };
   },
   created: function () {
@@ -40,6 +49,20 @@ export default {
     capitalizeName: function (name) {
       return name.charAt(0).toUpperCase() + name.slice(1);
     },
+    selectPokemon: function (pokemon) {
+      if (this.selectedPokemon) {
+        this.selectedPokemon == null;
+        return;
+      }
+      this.selectedPokemon = pokemon;
+    },
+  },
+  watch: {
+    // selectedPokemon() {
+    //   if (this.selectedPokemon) {
+    //     this.selectedPokemon == null;
+    //   }
+    // },
   },
 };
 </script>
@@ -70,5 +93,14 @@ export default {
 }
 .pokemonListItem:hover .pokeball {
   animation: rotation 2s infinite linear;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
