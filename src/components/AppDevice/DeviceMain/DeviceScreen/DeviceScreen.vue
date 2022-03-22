@@ -33,11 +33,11 @@
       </div>
       <div class="h-1/5 w-full">
         <div class="h-full w-1/2 m-auto flex justify-around items-center">
-          <div class="page-button">
+          <button class="page-button" @click="page -= 1" :disabled="page <= 1">
             <img class="w-12" src="./assets/left-arrow.png" />
-          </div>
+          </button>
           <div class="text-5xl">{{ page }}</div>
-          <div class="page-button">
+          <div class="page-button" @click="page += 1">
             <img class="w-12" src="./assets/right-arrow.png" />
           </div>
         </div>
@@ -54,13 +54,21 @@ export default {
     return {
       pokedex: [],
       selectedPokemon: null,
-      page: 1,
+      page: 2,
+      pokeAmountOnPage: 5,
     };
   },
   created: function () {
-    formatedPokemonData().then((info) => (this.pokedex = info));
+    this.getPokemonToPage();
   },
-  computed: {},
+  computed: {
+    startIndex() {
+      return this.page == 1 ? 1 : this.page * this.pokeAmountOnPage;
+    },
+    endIndex() {
+      return this.page * this.pokeAmountOnPage;
+    },
+  },
   methods: {
     capitalizeName: function (name) {
       return name.charAt(0).toUpperCase() + name.slice(1);
@@ -68,13 +76,16 @@ export default {
     selectPokemon: function (pokemon) {
       this.selectedPokemon = pokemon;
     },
+    getPokemonToPage: function () {
+      formatedPokemonData(this.startIndex).then(
+        (info) => (this.pokedex = info)
+      );
+    },
   },
   watch: {
-    // selectedPokemon() {
-    //   if (this.selectedPokemon) {
-    //     this.selectedPokemon == null;
-    //   }
-    // },
+    page() {
+      this.getPokemonToPage();
+    },
   },
 };
 </script>
@@ -83,8 +94,8 @@ export default {
 .page-button {
   border-radius: 35px;
   border: 4px solid #ff3d00;
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   display: flex;
   padding: 10px;
   justify-content: space-around;

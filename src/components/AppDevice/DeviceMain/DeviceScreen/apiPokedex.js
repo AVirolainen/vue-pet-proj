@@ -1,16 +1,16 @@
 import Pokedex from "pokedex-promise-v2";
 const P = new Pokedex();
 
-const getPokemon = () => {
-  const pokemonInfoList = new Array(5).fill(0).map((item, index) => {
-    return P.getPokemonByName(index + 1);
+const getPokemon = (startIndex) => {
+  const pokemonInfoList = new Array(5).fill(0).map(() => {
+    return P.getPokemonByName(startIndex++);
   });
   const data = Promise.allSettled(pokemonInfoList);
   return data;
 };
 
-export const formatedPokemonData = async () => {
-  const pokemonData = await getPokemon();
+export const formatedPokemonData = async (start) => {
+  const pokemonData = await getPokemon(start);
   const formattedData = pokemonData.map((item) => {
     const promisedValue = item.value;
     return {
