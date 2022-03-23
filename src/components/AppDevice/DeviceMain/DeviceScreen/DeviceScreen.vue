@@ -6,7 +6,7 @@
       <div class="lamp" />
       <div class="lamp" />
     </div>
-    <div class="mainScreen bg-white h-5/6 w-5/6 m-auto p-2">
+    <div class="mainScreen bg-white h-5/6 w-5/6 m-auto">
       <div class="w-full flex h-4/5">
         <div class="w-1/2">
           <div
@@ -25,14 +25,15 @@
             </div>
           </div>
         </div>
-        <transition name="fade">
-          <div class="w-1/2" v-if="selectedPokemon">
+        <div class="w-1/2 bg-stone-200 mt-5" v-if="true">
+          <!-- <transition name="fade">
             <img class="pokemonImage" :src="selectedPokemon.sprite" />
-          </div>
-        </transition>
+          </transition> -->
+          <img class="tv-noise" src="./assets/tv.gif" />
+        </div>
       </div>
       <div class="h-1/5 w-full">
-        <div class="h-full w-1/2 m-auto flex justify-around items-center">
+        <div class="h-full w-1/2 flex justify-around items-center">
           <button class="page-button" @click="page -= 1" :disabled="page <= 1">
             <img class="w-12" src="./assets/left-arrow.png" />
           </button>
@@ -54,7 +55,7 @@ export default {
     return {
       pokedex: [],
       selectedPokemon: null,
-      page: 2,
+      page: 1,
       pokeAmountOnPage: 5,
     };
   },
@@ -63,7 +64,7 @@ export default {
   },
   computed: {
     startIndex() {
-      return this.page == 1 ? 1 : this.page * this.pokeAmountOnPage;
+      return this.page == 1 ? 1 : this.page + this.pokeAmountOnPage * 2;
     },
     endIndex() {
       return this.page * this.pokeAmountOnPage;
@@ -91,6 +92,12 @@ export default {
 </script>
 
 <style scoped>
+.tv-noise {
+  height: 200px;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 5px;
+}
 .page-button {
   border-radius: 35px;
   border: 4px solid #ff3d00;
@@ -144,8 +151,8 @@ export default {
   content: "";
   display: block;
   width: 0;
-  height: 2px;
-  background: #000;
+  height: 4px;
+  background: rgb(64 64 64);
   transition: width 0.3s;
 }
 
@@ -162,7 +169,8 @@ export default {
   opacity: 0;
 }
 .pokemonImage {
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
 }
 </style>
