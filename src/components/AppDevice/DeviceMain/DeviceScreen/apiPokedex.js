@@ -1,28 +1,25 @@
 import Pokedex from "pokedex-promise-v2";
 const P = new Pokedex();
 
-const getPokemon = (startIndex) => {
-  const pokemonInfoList = new Array(5).fill(0).map(() => {
-    const res = P.getPokemonByName(startIndex);
-    startIndex += 1;
-    return res;
+export const getPokemon = (url) => {
+  return fetch(url).then((response) => {
+    return response.json();
   });
-  const data = Promise.allSettled(pokemonInfoList);
-  return data;
 };
 
-export const formatedPokemonData = async (start) => {
-  const pokemonData = await getPokemon(start);
-  const formattedData = pokemonData.map((item) => {
-    const promisedValue = item.value;
-    const res = {
-      name: promisedValue.name,
-      order: start,
-      pixelSprite: promisedValue.sprites.front_default,
-      sprite: promisedValue.sprites.other["official-artwork"].front_default,
-    };
-    start += 1;
-    return res;
-  });
+export const formatedPokemonData = (pokemonData) => {
+  const formattedData = {
+    name: pokemonData.name,
+    pixelSprite: pokemonData.sprites.front_default,
+    sprite: pokemonData.sprites.other["official-artwork"].front_default,
+  };
+  console.log(formattedData);
   return formattedData;
 };
+
+export const getPokemonList = async () => {
+  const { results } = await P.getPokemonsList();
+  return results;
+};
+
+// P.getPokemonsList().then((data) => console.log(data));

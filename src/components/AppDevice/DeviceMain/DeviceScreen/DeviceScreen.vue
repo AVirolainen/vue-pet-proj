@@ -6,41 +6,46 @@
       <div class="lamp" />
       <div class="lamp" />
     </div>
-    <div class="mainScreen bg-white h-5/6 w-5/6 m-auto">
-      <div class="w-full flex h-4/5">
+    <div class="mainScreen bg-white h-5/6 w-5/6 m-auto overflow-y-auto">
+      <div class="w-full flex justify-between">
         <div class="w-1/2">
           <div
-            v-for="pokemon in pokedex"
-            :key="pokemon.order"
+            v-for="(pokemon, index) in pokedex"
+            :key="index"
             @click="selectPokemon(pokemon)"
-            class="pokemonListItem h-1/6 my-1 cursor-pointer"
+            class="pokemonListItem h-1/7 my-1 cursor-pointer"
           >
             <div class="w-full flex justify-around">
               <img class="pokeball" src="./assets/pokeball.png" />
               <div class="w-2/3 text-2xl flex items-center pl-5">
-                №{{ pokemon.order }}
+                №{{ ++index }}
                 {{ capitalizeName(pokemon.name) }}
               </div>
               <img class="pokeball" src="./assets/pokeball.png" />
             </div>
           </div>
+
+          <!-- <div class="h-1/5 w-full mt-5">
+            <div class="flex justify-around items-center">
+              <button
+                class="page-button"
+                @click="page -= 1"
+                :disabled="page <= 1"
+              >
+                <img class="w-12" src="./assets/left-arrow.png" />
+              </button>
+              <div class="text-5xl">{{ page }}</div>
+              <div class="page-button" @click="page += 1">
+                <img class="w-12" src="./assets/right-arrow.png" />
+              </div>
+            </div>
+          </div> -->
         </div>
-        <div class="w-1/2 bg-stone-200 mt-5" v-if="true">
-          <!-- <transition name="fade">
+        <div class="bg-stone-200 pokemonScreen mt-6 sticky top-6">
+          <transition name="fade" v-if="selectedPokemon">
             <img class="pokemonImage" :src="selectedPokemon.sprite" />
-          </transition> -->
-          <img class="tv-noise" src="./assets/tv.gif" />
-        </div>
-      </div>
-      <div class="h-1/5 w-full">
-        <div class="h-full w-1/2 flex justify-around items-center">
-          <button class="page-button" @click="page -= 1" :disabled="page <= 1">
-            <img class="w-12" src="./assets/left-arrow.png" />
-          </button>
-          <div class="text-5xl">{{ page }}</div>
-          <div class="page-button" @click="page += 1">
-            <img class="w-12" src="./assets/right-arrow.png" />
-          </div>
+          </transition>
+          <!-- <img class="tv-noise" src="./assets/tv.gif" /> -->
         </div>
       </div>
     </div>
@@ -48,7 +53,11 @@
 </template>
 
 <script>
-import { formatedPokemonData } from "./apiPokedex.js";
+import {
+  getPokemonList,
+  getPokemon,
+  formatedPokemonData,
+} from "./apiPokedex.js";
 
 export default {
   data: function () {
@@ -75,12 +84,12 @@ export default {
       return name.charAt(0).toUpperCase() + name.slice(1);
     },
     selectPokemon: function (pokemon) {
-      this.selectedPokemon = pokemon;
+      getPokemon(pokemon.url).then((data) => {
+        this.selectedPokemon = formatedPokemonData(data);
+      });
     },
     getPokemonToPage: function () {
-      formatedPokemonData(this.startIndex).then(
-        (info) => (this.pokedex = info)
-      );
+      getPokemonList(this.startIndex).then((info) => (this.pokedex = info));
     },
   },
   watch: {
@@ -92,6 +101,12 @@ export default {
 </script>
 
 <style scoped>
+.pokemonScreen {
+  height: 400px;
+  width: 350px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
 .tv-noise {
   height: 200px;
   width: 90%;
