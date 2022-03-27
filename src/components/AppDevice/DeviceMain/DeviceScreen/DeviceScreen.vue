@@ -43,9 +43,15 @@
         </div>
         <div class="bg-stone-200 pokemonScreen mt-6 sticky top-6">
           <transition name="fade" v-if="selectedPokemon">
-            <img class="pokemonImage" :src="selectedPokemon.sprite" />
+            <div class="pokemonInnerScreen">
+              <img class="pokemonImage" :src="selectedPokemon.sprite" />
+            </div>
           </transition>
-          <!-- <img class="tv-noise" src="./assets/tv.gif" /> -->
+          <transition name="fade" v-if="!selectedPokemon">
+            <div class="pokemonInnerScreen">
+              <img class="tv-noise" src="./assets/tv.gif" />
+            </div>
+          </transition>
         </div>
       </div>
     </div>
@@ -101,17 +107,25 @@ export default {
 </script>
 
 <style scoped>
+.pokemonInnerScreen {
+  width: 93%;
+  margin: 0 auto;
+  margin-top: 10px;
+  background-color: #fff;
+  height: 250px;
+  border-top-left-radius: 50px;
+  /* border-radius: 50px; */
+}
 .pokemonScreen {
   height: 400px;
   width: 350px;
   border-top-left-radius: 50px;
-  border-bottom-left-radius: 50px;
+  /* border-bottom-left-radius: 50px; */
 }
 .tv-noise {
-  height: 200px;
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 5px;
+  height: 100%;
+  width: 100%;
+  border-top-left-radius: 50px;
 }
 .page-button {
   border-radius: 35px;
